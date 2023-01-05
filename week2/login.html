@@ -27,6 +27,7 @@
                   class="form-control"
                   id="username"
                   placeholder="name@example.com"
+                  v-model="user.username"
                   required
                   autofocus
                 />
@@ -38,11 +39,16 @@
                   class="form-control"
                   id="password"
                   placeholder="Password"
+                  v-model="user.password"
                   required
                 />
                 <label for="password">Password</label>
               </div>
-              <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">
+              <button
+                class="btn btn-lg btn-primary w-100 mt-3"
+                type="button"
+                @click.prevent="login"
+              >
                 登入
               </button>
             </form>
@@ -67,5 +73,6 @@
       integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
       crossorigin="anonymous"
     ></script>
+    <script src="login.js" type="module"></script>
   </body>
 </html>
