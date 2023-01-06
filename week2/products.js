@@ -15,6 +15,7 @@ const app = {
       axios
         .post(`${this.url}/api/user/check`)
         .then((res) => {
+          alert(`狀態是否登入：${res.data.success}`);
           this.getData();
         })
         .catch((err) => {
