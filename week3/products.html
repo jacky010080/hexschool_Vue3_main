@@ -64,7 +64,7 @@
           </tbody>
         </table>
       </div>
-      <!-- Modal -->
+      <!-- 新增||編輯Modal -->
       <div
         id="productModal"
         ref="productModal"
@@ -268,7 +268,7 @@
           </div>
         </div>
       </div>
-
+      <!-- 刪除商品Modal -->
       <div
         id="delProductModal"
         ref="delProductModal"
@@ -292,7 +292,9 @@
             </div>
             <div class="modal-body">
               是否刪除
-              <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+              <!-- 顯示出想刪除商品的title -->
+              <strong class="text-danger">{{ tempProduct.title }}</strong>
+              商品(刪除後將無法恢復)。
             </div>
             <div class="modal-footer">
               <button
@@ -302,12 +304,18 @@
               >
                 取消
               </button>
-              <button type="button" class="btn btn-danger">確認刪除</button>
+              <!-- 呼叫deleteProduct方法 -->
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="deleteProduct"
+              >
+                確認刪除
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <!-- Modal -->
     </div>
 
     <script
