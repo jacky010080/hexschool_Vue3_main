@@ -1,8 +1,10 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+import pagination from "./pagination.js"
+
 let productModal = "";
 let delProductModal = "";
 
-const app = {
+const app = createApp({
   data() {
     return {
       url: "https://vue3-course-api.hexschool.io/v2",
@@ -12,7 +14,11 @@ const app = {
       tempProduct: {
         imagesUrl: [],
       },
+      page:{},
     };
+  },
+  components: {
+    pagination,
   },
   methods: {
     // 驗證是否登入
@@ -29,11 +35,12 @@ const app = {
         });
     },
     // 將資料庫中的資料丟進data
-    getData() {
+    getData(page = 1) {
       axios
-        .get(`${this.url}/api/${this.path}/admin/products/all`)
+        .get(`${this.url}/api/${this.path}/admin/products/?page=${page}`)
         .then((res) => {
           this.products = res.data.products;
+          this.page = res.data.pagination
         })
         .catch((err) => {
           alert(err.response.data.message);
@@ -113,5 +120,14 @@ const app = {
     axios.defaults.headers.common["Authorization"] = token;
     this.checkLogin();
   },
-};
-createApp(app).mount("#app");
+});
+
+app.component('product-modal', {
+  props: ['isNew', 'tempProduct', 'updateProduct', 'createImages'],
+  template: `#product-modal-template`,
+});
+app.component('delete-modal', {
+  props: ['tempProduct', 'deleteProduct'],
+  template: `#delete-modal-template`,
+});
+app.mount("#app");
