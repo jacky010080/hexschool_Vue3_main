@@ -1,5 +1,3 @@
-import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-
 const url = 'https://vue3-course-api.hexschool.io/v2';
 const path = "jacky010080";
 
@@ -37,10 +35,8 @@ const productModal = {
 	watch: {
 		id() {
 			if (this.id) {
-				console.log('productModal:', this.id);
 				axios.get(`${url}/api/${path}/product/${this.id}`)
 					.then(res => {
-						console.log('單一產品：', res.data.product);
 						this.tempProduct = res.data.product;
 						this.modal.show();
 					});
@@ -55,7 +51,7 @@ const productModal = {
 	},
 };
 
-const app = createApp({
+const app = Vue.createApp({
 	data() {
 		return {
 			products: [],
@@ -83,7 +79,6 @@ const app = createApp({
 		getProducts() {
 			axios.get(`${url}/api/${path}/products/all`)
 				.then(res => {
-					console.log('產品列表：', res.data.products);
 					this.products = res.data.products;
 				});
 		},
@@ -98,7 +93,6 @@ const app = createApp({
 			};
 			axios.post(`${url}/api/${path}/cart`, { data })
 				.then(res => {
-					console.log('加入購物車：', res.data);
 					this.$refs.productModal.hide();
 					this.getCart();
 					this.loadingItem = "";
@@ -107,7 +101,6 @@ const app = createApp({
 		getCart() {
 			axios.get(`${url}/api/${path}/cart`)
 				.then(res => {
-					console.log('購物車：', res.data.data);
 					this.cart = res.data.data;
 				});
 		},
@@ -119,7 +112,6 @@ const app = createApp({
 			this.loadingItem = item.id;
 			axios.put(`${url}/api/${path}/cart/${item.id}`, { data })
 				.then(res => {
-					console.log('更新商品數量：', res.data.data);
 					this.getCart();
 					this.loadingItem = "";
 				});
@@ -128,19 +120,25 @@ const app = createApp({
 			this.loadingItem = item.id;
 			axios.delete(`${url}/api/${path}/cart/${item.id}`)
 				.then(res => {
-					console.log('刪除商品：', res.data);
 					this.getCart();
 					this.loadingItem = "";
+				});
+		},
+		deleteAllProduct() {
+			axios.delete(`${url}/api/${path}/carts`)
+				.then(res => {
+					this.getCart();
 				});
 		},
 		createOrder() {
 			const data = this.form;
 			axios.post(`${url}/api/${path}/order`, { data })
 				.then(res => {
-					console.log('加入購物車：', res.data);
-					this.$refs.productModal.hide();
-					this.getCart();
-					this.loadingItem = "";
+					this.$refs.form.resetForm();
+        	this.getCart();
+				})
+				.catch(err => {
+					console.log(err);
 				});
 		},
 	},
