@@ -80,10 +80,19 @@ const app = Vue.createApp({
 			axios.get(`${url}/api/${path}/products/all`)
 				.then(res => {
 					this.products = res.data.products;
+				})
+				.catch(err => {
+					alert(err.response.data.message);
 				});
 		},
 		openModal(id) {
 			this.productId = id;
+		},
+		getCart() {
+			axios.get(`${url}/api/${path}/cart`)
+				.then(res => {
+					this.cart = res.data.data;
+				});
 		},
 		addToCart(product_id, qty = 1) {
 			this.loadingItem = product_id;
@@ -93,15 +102,13 @@ const app = Vue.createApp({
 			};
 			axios.post(`${url}/api/${path}/cart`, { data })
 				.then(res => {
+					alert(res.data.message);
 					this.$refs.productModal.hide();
 					this.getCart();
 					this.loadingItem = "";
-				});
-		},
-		getCart() {
-			axios.get(`${url}/api/${path}/cart`)
-				.then(res => {
-					this.cart = res.data.data;
+				})
+				.catch(err => {
+					alert(err.response.data.message);
 				});
 		},
 		updateProductQty(item) {
@@ -112,7 +119,12 @@ const app = Vue.createApp({
 			this.loadingItem = item.id;
 			axios.put(`${url}/api/${path}/cart/${item.id}`, { data })
 				.then(res => {
+					alert(res.data.message);
 					this.getCart();
+					this.loadingItem = "";
+				})
+				.catch(err => {
+					alert(err.response.data.message);
 					this.loadingItem = "";
 				});
 		},
@@ -120,25 +132,34 @@ const app = Vue.createApp({
 			this.loadingItem = item.id;
 			axios.delete(`${url}/api/${path}/cart/${item.id}`)
 				.then(res => {
+					alert(res.data.message);
 					this.getCart();
 					this.loadingItem = "";
+				})
+				.catch(err => {
+					alert(err.response.data.message);
 				});
 		},
 		deleteAllProduct() {
 			axios.delete(`${url}/api/${path}/carts`)
 				.then(res => {
+					alert(res.data.message);
 					this.getCart();
+				})
+				.catch(err => {
+					alert(err.response.data.message);
 				});
 		},
 		createOrder() {
 			const data = this.form;
 			axios.post(`${url}/api/${path}/order`, { data })
 				.then(res => {
+					alert(res.data.message);
 					this.$refs.form.resetForm();
-        	this.getCart();
+					this.getCart();
 				})
 				.catch(err => {
-					console.log(err);
+					alert(err.response.data.message);
 				});
 		},
 	},
