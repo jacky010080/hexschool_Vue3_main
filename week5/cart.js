@@ -92,6 +92,9 @@ const app = Vue.createApp({
 			axios.get(`${url}/api/${path}/cart`)
 				.then(res => {
 					this.cart = res.data.data;
+				})
+				.catch(err => {
+					alert(err.response.data.message);
 				});
 		},
 		addToCart(product_id, qty = 1) {
